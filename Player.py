@@ -218,7 +218,7 @@ class Player:
 				else:
 					if card.name>=9:
 						self.suitevalues[j] = self.suitevalues[j] + .5
-			print "%d" % (self.suitevalues[j] ,)
+			#print "%d" % (self.suitevalues[j] ,)
 			if self.suitevalues[j]>self.maxbid:
 				self.maxbid=self.suitevalues[j]
 				self.maxbidsuite=i
@@ -348,10 +348,12 @@ class Player:
 		
 	def PointsPlayed(self,cardInGround):
 	#returns the number of points played in this hand so far
+	#does this by looping through what each player has played
 		pointsplayed=0
-		for card in cardInGround:
-			if card.name>=9:
+		for j in range(0,len(cardInGround)):
+			if cardInGround[j][0].name>=9:
 				pointsplayed=pointsplayed+1
+		print "points played: %d\n" % (pointsplayed ,)
 		return pointsplayed
 		
 	def play(self,cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General):
@@ -362,7 +364,7 @@ class Player:
 	def playStratN1(self,cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General):
 		retcard=None
 		self.analayzLastDeck(playedCard)
-		self.pointsplayed=0
+		pointsplayed=0
 		
 		if self.isNapoleon==True:
 			#player is his own general
@@ -401,7 +403,7 @@ class Player:
 					#for now however it is being dumb and going to play a high card.  this will need to be changed. but i want to get it up and running
 					maxCardToPlay=0
 					for card in self.cardsInHand:
-						if card.isPlayed==False and card.name>maxCardToPlay and card.type==cardInGround[0][0].type :
+						if card.isPlayed==False and card.name>maxCardToPlay :
 							maxCardToPlay=card.name
 							retcard=card
 					if retcard:
@@ -414,11 +416,11 @@ class Player:
 			#player is napoleon and the general is known
 			elif General!=None:
 				if len(cardInGround)!=0:
-					self.pointsplayed=PointsPlayed(cardInGround)
+					pointsplayed=self.PointsPlayed(cardInGround)
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
 					if self.hastThisType(cardInGround[0][0].type)==True:
-						if self.pointsplayed>0 or len(cardInGround)<2:
+						if pointsplayed>0 or len(cardInGround)<2:
 							#if there are points played then we try and play higher
 							maxCardToPlay=0
 							for card in self.cardsInHand:
@@ -451,7 +453,7 @@ class Player:
 					#for now however it is being dumb and going to play a high card.  this will need to be changed. but i want to get it up and running
 					maxCardToPlay=0
 					for card in self.cardsInHand:
-						if card.isPlayed==False and card.name>maxCardToPlay and card.type==cardInGround[0][0].type :
+						if card.isPlayed==False and card.name>maxCardToPlay :
 							maxCardToPlay=card.name
 							retcard=card
 					if retcard:
@@ -463,11 +465,11 @@ class Player:
 			#player is napoleon and the general is unknown
 			else:
 				if len(cardInGround)!=0:
-					self.pointsplayed=PointsPlayed(cardInGround)
+					pointsplayed=self.PointsPlayed(cardInGround)
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
 					if self.hastThisType(cardInGround[0][0].type)==True:
-						if self.pointsplayed>0 or len(cardInGround)<2:
+						if pointsplayed>0 or len(cardInGround)<2:
 							#if there are points played then we try and play higher
 							maxCardToPlay=0
 							for card in self.cardsInHand:
@@ -500,7 +502,7 @@ class Player:
 					#for now however it is being dumb and going to play a high card.  this will need to be changed. but i want to get it up and running
 					maxCardToPlay=0
 					for card in self.cardsInHand:
-						if card.isPlayed==False and card.name>maxCardToPlay and card.type==cardInGround[0][0].type :
+						if card.isPlayed==False and card.name>maxCardToPlay :
 							maxCardToPlay=card.name
 							retcard=card
 					if retcard:
@@ -514,11 +516,11 @@ class Player:
 			#this code won't be used until there is a pot because the computer user will currently never pick one of their cards as general
 			if self.isGeneral==True:
 				if len(cardInGround)!=0:
-					self.pointsplayed=PointsPlayed(cardInGround)
+					pointsplayed=self.PointsPlayed(cardInGround)
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
 					if self.hastThisType(cardInGround[0][0].type)==True:
-						if self.pointsplayed>0 or len(cardInGround)<2:
+						if pointsplayed>0 or len(cardInGround)<2:
 							#if there are points played then we try and play higher
 							maxCardToPlay=0
 							for card in self.cardsInHand:
@@ -551,7 +553,7 @@ class Player:
 					#for now however it is being dumb and going to play a high card.  this will need to be changed. but i want to get it up and running
 					maxCardToPlay=0
 					for card in self.cardsInHand:
-						if card.isPlayed==False and card.name>maxCardToPlay and card.type==cardInGround[0][0].type :
+						if card.isPlayed==False and card.name>maxCardToPlay :
 							maxCardToPlay=card.name
 							retcard=card
 					if retcard:
@@ -563,7 +565,7 @@ class Player:
 			#player not napoleon or general and the general is known
 			elif General!=None:
 				if len(cardInGround)!=0:
-					self.pointsplayed=PointsPlayed(cardInGround)
+					pointsplayed=self.PointsPlayed(cardInGround)
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
 					if self.hastThisType(cardInGround[0][0].type)==True:
@@ -600,7 +602,7 @@ class Player:
 					#for now however it is being dumb and going to play a high card.  this will need to be changed. but i want to get it up and running
 					maxCardToPlay=0
 					for card in self.cardsInHand:
-						if card.isPlayed==False and card.name>maxCardToPlay and card.type==cardInGround[0][0].type :
+						if card.isPlayed==False and card.name>maxCardToPlay :
 							maxCardToPlay=card.name
 							retcard=card
 					if retcard:
@@ -611,11 +613,11 @@ class Player:
 			#player is not napoleon and the general is unknown
 			else:
 				if len(cardInGround)!=0:
-					self.pointsplayed=PointsPlayed(cardInGround)
+					pointsplayed=self.PointsPlayed(cardInGround)
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
 					if self.hastThisType(cardInGround[0][0].type)==True:
-						if self.pointsplayed>0 or len(cardInGround)<2:
+						if pointsplayed>0 or len(cardInGround)<2:
 							#if there are points played then we try and play higher
 							maxCardToPlay=0
 							for card in self.cardsInHand:
@@ -648,7 +650,7 @@ class Player:
 					#for now however it is being dumb and going to play a high card.  this will need to be changed. but i want to get it up and running
 					maxCardToPlay=0
 					for card in self.cardsInHand:
-						if card.isPlayed==False and card.name>maxCardToPlay and card.type==cardInGround[0][0].type :
+						if card.isPlayed==False and card.name>maxCardToPlay :
 							maxCardToPlay=card.name
 							retcard=card
 					if retcard:
@@ -656,8 +658,13 @@ class Player:
 							return self.setAsPlay(retcard)
 						else:
 							retcard=None
-
-
+		if retcard==None:
+		#Ok stupid ! play every thinh you want ! I dont know how much must learn you Hearts Game :P
+			for i in range(0,13):
+				if self.cardsInHand[i].isPlayed==False:
+					if self.checkPlayCard(self.cardsInHand[i], cardInGround, numOfDeckPlay):
+						retcard=self.cardsInHand[i]
+		return retcard
 
 		#this is the start of testing if we shoudl use the 2
 		#if numOfDeckPlay!=0:

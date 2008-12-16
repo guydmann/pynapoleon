@@ -1002,9 +1002,12 @@ class background:
 				self.screen.blit(textPlayer, (375,38))
 		if self.Napoleon==3:
 			if self.GeneralCardNumber!=None:
-				general = "%s of %s" % (self.textcardnumber(self.GeneralCardNumber), self.textsuite(self.GeneralCardSuite), )
+				general = "%s of" % (self.textcardnumber(self.GeneralCardNumber), )
 				textPlayer = font.render(general,1 , fontColor)
-				self.screen.blit(textPlayer, (420,360))
+				self.screen.blit(textPlayer, (420,365))
+				general = "%s" % (self.textsuite(self.GeneralCardSuite), )
+				textPlayer = font.render(general,1 , fontColor)
+				self.screen.blit(textPlayer, (420,375))				
 		if self.Napoleon==4:
 			if self.GeneralCardNumber!=None or self.GeneralCardSuite!=None:
 				if self.GeneralCardNumber==None:
