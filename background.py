@@ -1203,7 +1203,7 @@ class background:
 				
 			#if scores[0]>=scores[1] and scores[0]>=scores[2] and scores[0]>=scores[3]:
 			if scores[5]  == 1 or scores[6]  == 1:
-				if self.result >  scores[4]:
+				if self.result >= scores[4]:
 					fontColorPlayer1=(35, 20, 234)
 				else:
 					fontColorPlayer1=(234, 20, 35)
@@ -1216,7 +1216,7 @@ class background:
 
 			#if scores[1]>=scores[0] and scores[1]>=scores[2] and scores[1]>=scores[3]:
 			if scores[5] == 2 or  scores[6] == 2 :
-				if self.result>scores[4]:
+				if self.result>=scores[4]:
 					fontColorPlayer2=(35, 20, 234)
 				else:
 					fontColorPlayer2=(234, 20, 35)
@@ -1228,7 +1228,7 @@ class background:
 				textScoresPlayer2 = font.render(scores[1].__str__(), 1, fontColorPlayer2)
 
 			if scores[5] == 3 or  scores[6] == 3 :
-				if self.result>scores[4]:
+				if self.result>=scores[4]:
 					fontColorPlayer3=(35, 20, 234)
 				else:
 					fontColorPlayer3=(234, 20, 35)
@@ -1240,7 +1240,7 @@ class background:
 				textScoresPlayer3 = font.render(scores[2].__str__(), 1, fontColorPlayer3)
 
 			if scores[5] == 4 or scores[6] == 4:
-				if self.result>scores[4]  :
+				if self.result>=scores[4]  :
 					fontColorPlayer4=(35, 20, 234)
 				else:
 					fontColorPlayer4=(234, 20, 35)
