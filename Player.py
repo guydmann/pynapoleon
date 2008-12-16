@@ -714,53 +714,43 @@ class Player:
 #						       retcard=None                                              
 					
 					
-		#check is heart or Queen of Spades play yet ?
-#		self.checkIsPlayHeart(playedCard)
 		#self.analayzLastDeck(playedCard)
 #		self.analayzPlayer(playedCard)
 		#check if game played by hearts try play by less than cards in ground
 
 
 	#check card and cards in Played card on type Hearts If didnt play larger than card number palying is safe
-	def checkCanPlayHearts(self,card,playedCard):
-		maxHeartsPlayedCard=0
-		#find max hearts play in played card
-		for cards in playedCard:
-			if cards[0].type==cardType.Hearts:
-				if cards[0].name>maxHeartsPlayedCard:
-					maxHeartsPlayedCard=cards[0].name
-			if cards[1].type==cardType.Hearts:
-				if cards[1].name>maxHeartsPlayedCard:
-					maxHeartsPlayedCard=cards[1].name
-			if cards[2].type==cardType.Hearts:
-				if cards[2].name>maxHeartsPlayedCard:
-					maxHeartsPlayedCard=cards[2].name
-			if cards[3].type==cardType.Hearts:
-				if cards[2].name>maxHeartsPlayedCard:
-					maxHeartsPlayedCard=cards[3].name
-		#find max hearts in his hand
-		for tmpCard in self.cardsInHand:
-			if tmpCard.type==cardType.Hearts:
-				if tmpCard>maxHeartsPlayedCard:
-					maxHeartsPlayedCard=tmpCard
-		if card.name<maxHeartsPlayedCard:
-			return True
-		return False
-			
-		pass
+#	def checkCanPlayHearts(self,card,playedCard):
+#		maxHeartsPlayedCard=0
+#		#find max hearts play in played card
+#		for cards in playedCard:
+#			if cards[0].type==cardType.Hearts:
+#				if cards[0].name>maxHeartsPlayedCard:
+#					maxHeartsPlayedCard=cards[0].name
+#			if cards[1].type==cardType.Hearts:
+#				if cards[1].name>maxHeartsPlayedCard:
+#					maxHeartsPlayedCard=cards[1].name
+#			if cards[2].type==cardType.Hearts:
+#				if cards[2].name>maxHeartsPlayedCard:
+#					maxHeartsPlayedCard=cards[2].name
+#			if cards[3].type==cardType.Hearts:
+#				if cards[2].name>maxHeartsPlayedCard:
+#					maxHeartsPlayedCard=cards[3].name
+#		#find max hearts in his hand
+#		for tmpCard in self.cardsInHand:
+#			if tmpCard.type==cardType.Hearts:
+#				if tmpCard>maxHeartsPlayedCard:
+#					maxHeartsPlayedCard=tmpCard
+#		if card.name<maxHeartsPlayedCard:
+#			return True
+#		return False
+#		pass
 
 	def setAsPlay(self,card):
 		card.isPlayed=True
 		if card.name==cardNumber.queen and cardType.Spades==card.type:
 			self.hasQueenSpades=False
 		return card
-
-	def checkIsPlayedQueen(self,playedCard):
-		for i in range(0,len(playedCard)):
-			for j in range(0,4):
-				if playedCard[i][j].type==cardType.Spades and playedCard[i][j].name==cardNumber.queen:
-					return True
-		return False    
 
 	def removeCards(self):
 		self.cardsInHand
@@ -837,17 +827,6 @@ class Player:
 					return True
 		return False
 
-	def checkIsPlayHeart(self,playedCard):
-		if self.isQueenSpadesPlayed==True and self.isPlayHeart==True :
-			return 
-		for i in range(0,len(playedCard)):
-			for j in range(0,4):
-				if playedCard[i][j].type==cardType.Hearts:
-					self.isPlayHeart=True
-				if playedCard[i][j].type==cardType.Spades and  playedCard[i][j].name == cardNumber.queen :
-					self.isQueenSpadesPlayed=True
-				if self.isQueenSpadesPlayed==True and self.isPlayHeart==True :
-					return 
 
 	def checkPlayCard(self,cardToPlay,cardInGround,numOfDeckPlay):
 #		if(numOfDeckPlay==0):
