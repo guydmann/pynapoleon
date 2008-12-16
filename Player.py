@@ -291,8 +291,8 @@ class Player:
 			elif (cardInGround[j][0].type==trump):
 				TrumpPlayed = True
 				if ( JackTrumpPlayed ==False and JackAltPlayed ==False ):
-					if (cardInGround[currentwinner - playerwhostarted][0].type==trump)
-						if (cardInGround[j][0].name>cardInGround[currentwinner - playerwhostarted][0].name)
+					if (cardInGround[currentwinner - playerwhostarted][0].type==trump):
+						if (cardInGround[j][0].name>cardInGround[currentwinner - playerwhostarted][0].name):
 							currentwinner = j + playerwhostarted
 					else:
 						currentwinnder = j + playerwhostarted
@@ -314,7 +314,7 @@ class Player:
 		#or if it's a higher trump
 		elif (testcard.type==trump and trump!=startingsuit):
 			if ( JackTrumpPlayed ==False and JackAltPlayed ==False ):
-				if (cardInGround[currentwinner - playerwhostarted][0].type==trump)
+				if (cardInGround[currentwinner - playerwhostarted][0].type==trump):
 					if (testcard.name>cardInGround[currentwinner - playerwhostarted][0].name):
 						currentwinnder = self.locationInPlayedCard
 				else:
