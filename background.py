@@ -512,7 +512,7 @@ class background:
 				#move card to ground
 				self.moveCardSlowly(self.selectedCard,screenPlayer1[14])
 				self.tmpPlayedCard.append([self.selectedCard,1])
-				#print "Player 1 play ",self.selectedCard.name
+				print "Player 1 play ",self.selectedCard.name
 				self.selectedCard=None
 			elif self.turnPlay==2 and self.player2.currentPlay==None:
 				print "2"
@@ -520,7 +520,7 @@ class background:
 				self.player2.currentPlay=self.selectedCard
 				self.moveCardSlowly(self.selectedCard,screenPlayer2[14])
 				self.tmpPlayedCard.append([self.selectedCard,2])
-				#print "Player 2 play ",self.selectedCard.name
+				print "Player 2 play ",self.selectedCard.name
 				self.selectedCard=None
 
 			elif self.turnPlay==3 and self.player3.currentPlay==None:
@@ -530,7 +530,7 @@ class background:
 				self.player3.currentPlay=self.selectedCard
 				self.moveCardSlowly(self.selectedCard,screenPlayer3[14])
 				self.tmpPlayedCard.append([self.selectedCard,3])
-				#print "Player 3 play ",self.selectedCard.name
+				print "Player 3 play ",self.selectedCard.name
 				self.selectedCard=None
 				#pygame.time.delay(500)
 

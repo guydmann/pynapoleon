@@ -241,12 +241,10 @@ class Player:
 		#testcard: the card which we are thinking of playing
 		#Returns the player number of the person who will currently win the hand
 		
-		#if you play the ace of spades you win the hand, easy short circuit
+		
 		
 		#self.locationInPlayedCard	
-		
-		if (testcard.type==2 and testcard.name==cardNumber.Ace):
-			return self.locationInPlayedCard
+
 			
 		#number of cards played - players location modulous 4 tells us who started
 		playerwhostarted=(len(cardInGround)-self.locationInPlayedCard)%4		
@@ -256,6 +254,7 @@ class Player:
 		FollowedSuite = True
 		TrumpPlayed = False
 		Playedthe2 = None
+		currentwinner = playerwhostarted
 		
 		if (trump==1):
 			coloralt = 3
@@ -267,7 +266,10 @@ class Player:
 			coloralt = 2
 		if (trump==5):
 			coloralt = 5		
-		currentwinner = playerwhostarted
+		
+		#if you play the ace of spades you win the hand, easy short circuit
+		if (testcard.type==2 and testcard.name==cardNumber.Ace):
+			return self.locationInPlayedCard		
 		for j in range(0,len(cardInGround)):
 			#test for following suite
 			if (cardInGround[j][0].type != startingsuit):
@@ -281,8 +283,9 @@ class Player:
 				return j + playerwhostarted
 			#test for the jack of trump
 			elif (cardInGround[j][0].type==trump and cardInGround[j][0].name==cardNumber.jack):	
-				JackTrumpPlayed= true
+				JackTrumpPlayed= True
 				currentwinner = j + playerwhostarted
+				
 				#in future may want to test if the Ace of spades has been played or if it can be played
 			elif (cardInGround[j][0].type==coloralt and cardInGround[j][0].name==cardNumber.jack):
 				JackAltPlayed = True
@@ -295,13 +298,12 @@ class Player:
 						if (cardInGround[j][0].name>cardInGround[currentwinner - playerwhostarted][0].name):
 							currentwinner = j + playerwhostarted
 					else:
-						currentwinnder = j + playerwhostarted
-			elif (cardInGround[j][0].type==startingsuit and cardInGround[j][0].name>cardInGround[0][0].name and trump!=startingsuit):
+						currentwinner = j + playerwhostarted
+			elif (cardInGround[j][0].type==startingsuit and cardInGround[j][0].name>cardInGround[currentwinner - playerwhostarted][0].name and trump!=startingsuit):
 				if (JackTrumpPlayed ==False and JackAltPlayed ==False and TrumpPlayed == False):
 					currentwinner = j + playerwhostarted
-		if (FollowedSuite == True and JackTrumpPlayed ==False and JackAltPlayed ==False and (TrumpPlayed == False or trump==startingsuit)):
+		if (FollowedSuite == True and JackTrumpPlayed ==False and JackAltPlayed ==False and (TrumpPlayed == False or trump==startingsuit) and Playedthe2!=None):
 			currentwinner = Playedthe2
-		
 		#at this point if the test card is the jack of trump then it has to be the winner
 		#this is unless there is a bug that would allow 2 players to have a juack of trump, or if the game were to be expanded to 2 decks for some reason, which in and of itself would be problematic for the rules
 		if (cardInGround[j][0].type==trump and cardInGround[j][0].name==cardNumber.jack):
@@ -312,26 +314,27 @@ class Player:
 		#the cards is trump
 		#it will win if the winner hasn't played trump
 		#or if it's a higher trump
+
 		elif (testcard.type==trump and trump!=startingsuit):
 			if ( JackTrumpPlayed ==False and JackAltPlayed ==False ):
 				if (cardInGround[currentwinner - playerwhostarted][0].type==trump):
 					if (testcard.name>cardInGround[currentwinner - playerwhostarted][0].name):
-						currentwinnder = self.locationInPlayedCard
+						currentwinner = self.locationInPlayedCard
 				else:
-					currentwinnder = self.locationInPlayedCard
+					currentwinner = self.locationInPlayedCard
 		#if we are playing the starting suit
 		#and everyone followed suite and no power cards were played including 2s
 		#then if you are playing the higher card you win
 		elif (testcard.type==startingsuit):
 			if  ( JackTrumpPlayed ==False and JackAltPlayed ==False and FollowedSuite == True and Playedthe2 == False):		
 				if (cardInGround[currentwinner - playerwhostarted][0].type==startingsuit and testcard.name>cardInGround[currentwinner - playerwhostarted][0].name):
-					currentwinnder = self.locationInPlayedCard
+					currentwinner = self.locationInPlayedCard
 		#if you have the 2 and everyone followed suite
 		#and  no power cards were played
 		elif (testcard.type==startingsuit and testcard.name == 1 and FollowedSuite == True):
 			#don't need to test for 2 here.. if everyone followed suite then this shoudl be the only 2
 			if  ( JackTrumpPlayed ==False and JackAltPlayed ==False ):
-				currentwinnder = self.locationInPlayedCard
+				currentwinner = self.locationInPlayedCard
 		return currentwinner
 		
 	def PointsPlayed(self,cardInGround):
@@ -390,7 +393,7 @@ class Player:
 					minCardToPlay=15
 					for card in self.cardsInHand:
 						if (pointsplayed > 0):
-							if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+							if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 								return self.setAsPlay(card)
 						if (card.isPlayed==False and card.name<minCardToPlay):
 								minCardToPlay=card.name
@@ -408,7 +411,7 @@ class Player:
 				minCardToPlay=15
 				for card in self.cardsInHand:
 					if (pointsplayed > 0):
-						if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+						if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 							return self.setAsPlay(card)
 					if (card.isPlayed==False and card.name<minCardToPlay):
 							minCardToPlay=card.name
@@ -423,7 +426,7 @@ class Player:
 			#for now however it is being dumb and going to play a high card.  this will need to be changed. but i want to get it up and running
 			maxCardToPlay=0
 			for card in self.cardsInHand:
-				if card.isPlayed==False and card.name>maxCardToPlay and self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+				if card.isPlayed==False and card.name>maxCardToPlay and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 					maxCardToPlay=card.name
 					retcard=card
 					#need a who will win that considers all the cards that have already been played
