@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+#Game redevelopment by Guy Mann (guydmann atsign gmail dot com) 
+#Copyright (C) 2008  Guy Mann
 #Game developed by Milad Rastian (miladmovie atsign gmail dot com) 
 #http://home.gna.org/pyhearts/
 #I wrote this Game for course Artificial Intelligent in Yazd Jahad University
@@ -234,57 +236,6 @@ class Player:
 		
 		
 	
-		
-	def WillIWin(self,cardInGround,testcard, trump):
-		#cardInGround: list of the cards already played
-		#testcard: the card which we are thinking of playing
-		#Returns True if the card passed as testcard will beat all cards already played
-		#Returns False if the card won't win
-		
-		#if you play the ace of spades you win the hand, easy short circuit
-		if (testcard.type==2 and testcard.name==cardNumber.Ace):
-			return True
-		
-		startingsuit=cardInGround[0][0].type
-		if (trump==1):
-			coloralt = 3
-		if (trump==2):
-			coloralt = 4			
-		if (trump==3):
-			coloralt = 1			
-		if (trump==4):
-			coloralt = 2
-		if (trump==5):
-			coloralt = 5		
-		for card in cardInGround:
-			#if someone plays the ace of spades they win the hand
-			if (card.type==2 and card.name==cardNumber.Ace):
-				return False
-			#test for the jack of trump
-			if (card.type==trump and card.name==cardNumber.jack):
-				#if you're not playing the Ace of Spades then you lose
-				if (testcard.type!=2 and testcard.name!=cardNumber.Ace):
-					return False
-			#test for the jack of color
-			if (card.type==coloralt and card.name==cardNumber.jack):
-				#if you're not playing the Ace of spades or the jack of trump then you lose
-				if (testcard.type!=2 and testcard.name!=cardNumber.Ace) or (card.type!=trump and card.name!=cardNumber.jack):
-					return False
-			#if a trump is played and you are not playing trump thenyou will lose
-			if (card.type==trump and testcard.type!=trump):
-				#if you're not playing the Ace of spades or the jack of trump, or the jack of color  then you lose
-				if (testcard.type!=2 and testcard.name!=cardNumber.Ace) or (card.type!=trump and card.name!=cardNumber.jack) or (testcard.type!=coloralt and testcard.name!=cardNumber.jack):
-					return False
-			if (card.type==trump and testcard.type==trump and card.name>testcard.name):
-				#if you're not playing the Ace of spades or the jack of trump, or the jack of color  then you lose
-				if (testcard.type!=2 and testcard.name!=cardNumber.Ace) or (card.type!=trump and card.name!=cardNumber.jack) or (testcard.type!=coloralt and testcard.name!=cardNumber.jack):
-					return False
-			if (card.type==startingsuit and testcard.type==startingsuit and card.name>testcard.name):
-				if (testcard.type!=2 and testcard.name!=cardNumber.Ace) or (card.type!=trump and card.name!=cardNumber.jack) or (testcard.type!=coloralt and testcard.name!=cardNumber.jack):
-					return False
-#NEED TO ADD TEST FOR 2s					
-		return True
-		
 	def WhoWillWin(self,cardInGround,testcard, trump):
 		#cardInGround: list of the cards already played
 		#testcard: the card which we are thinking of playing
@@ -300,6 +251,11 @@ class Player:
 		#number of cards played - players location modulous 4 tells us who started
 		playerwhostarted=(len(cardInGround)-self.locationInPlayedCard)%4		
 		startingsuit=cardInGround[0][0].type
+		JackTrumpPlayed = False
+		JackAltPlayed = False
+		FollowedSuite = True
+		TrumpPlayed = False
+		Playedthe2 = None
 		
 		if (trump==1):
 			coloralt = 3
@@ -311,40 +267,72 @@ class Player:
 			coloralt = 2
 		if (trump==5):
 			coloralt = 5		
-		cardnum=0
 		currentwinner = playerwhostarted
-		for card in cardInGround:
-			
+		for j in range(0,len(cardInGround)):
+			#test for following suite
+			if (cardInGround[j][0].type != startingsuit):
+				FollowedSuite = False
+			#test for 2
+			if (cardInGround[j][0].name==1):
+				Playedthe2 = j + playerwhostarted
+				
 			#if someone plays the ace of spades they win the hand
-			if (card.type==2 and card.name==cardNumber.Ace):
-				currentwinner = cardnum + playerwhostarted
-				return currentwinner
-				#have to stop.. can't concentrate anymore
+			if (cardInGround[j][0].type==2 and cardInGround[j][0].name==cardNumber.Ace):
+				return j + playerwhostarted
 			#test for the jack of trump
-			if (card.type==trump and card.name==cardNumber.jack):
-				#if you're not playing the Ace of Spades then you lose
-				if (testcard.type!=2 and testcard.name!=cardNumber.Ace):
-					return cardnum + playerwhostarted
-			#test for the jack of color
-			if (card.type==coloralt and card.name==cardNumber.jack):
-				#if you're not playing the Ace of spades or the jack of trump then you lose
-				if (testcard.type!=2 and testcard.name!=cardNumber.Ace) or (card.type!=trump and card.name!=cardNumber.jack):
-					return False
-			#if a trump is played and you are not playing trump thenyou will lose
-			if (card.type==trump and testcard.type!=trump):
-				#if you're not playing the Ace of spades or the jack of trump, or the jack of color  then you lose
-				if (testcard.type!=2 and testcard.name!=cardNumber.Ace) or (card.type!=trump and card.name!=cardNumber.jack) or (testcard.type!=coloralt and testcard.name!=cardNumber.jack):
-					return False
-			if (card.type==trump and testcard.type==trump and card.name>testcard.name):
-				#if you're not playing the Ace of spades or the jack of trump, or the jack of color  then you lose
-				if (testcard.type!=2 and testcard.name!=cardNumber.Ace) or (card.type!=trump and card.name!=cardNumber.jack) or (testcard.type!=coloralt and testcard.name!=cardNumber.jack):
-					return False
-			if (card.type==startingsuit and testcard.type==startingsuit and card.name>testcard.name):
-				if (testcard.type!=2 and testcard.name!=cardNumber.Ace) or (card.type!=trump and card.name!=cardNumber.jack) or (testcard.type!=coloralt and testcard.name!=cardNumber.jack):
-					return False
-#NEED TO ADD TEST FOR 2s					
-			cardnum = cardnum+1
-		return cardnum-1
+			elif (cardInGround[j][0].type==trump and cardInGround[j][0].name==cardNumber.jack):	
+				JackTrumpPlayed= true
+				currentwinner = j + playerwhostarted
+				#in future may want to test if the Ace of spades has been played or if it can be played
+			elif (cardInGround[j][0].type==coloralt and cardInGround[j][0].name==cardNumber.jack):
+				JackAltPlayed = True
+				if ( JackTrumpPlayed ==False):
+					currentwinner = j + playerwhostarted
+			elif (cardInGround[j][0].type==trump):
+				TrumpPlayed = True
+				if ( JackTrumpPlayed ==False and JackAltPlayed ==False ):
+					if (cardInGround[currentwinner - playerwhostarted][0].type==trump)
+						if (cardInGround[j][0].name>cardInGround[currentwinner - playerwhostarted][0].name)
+							currentwinner = j + playerwhostarted
+					else:
+						currentwinnder = j + playerwhostarted
+			elif (cardInGround[j][0].type==startingsuit and cardInGround[j][0].name>cardInGround[0][0].name and trump!=startingsuit):
+				if (JackTrumpPlayed ==False and JackAltPlayed ==False and TrumpPlayed == False):
+					currentwinner = j + playerwhostarted
+		if (FollowedSuite == True and JackTrumpPlayed ==False and JackAltPlayed ==False and (TrumpPlayed == False or trump==startingsuit)):
+			currentwinner = Playedthe2
+		
+		#at this point if the test card is the jack of trump then it has to be the winner
+		#this is unless there is a bug that would allow 2 players to have a juack of trump, or if the game were to be expanded to 2 decks for some reason, which in and of itself would be problematic for the rules
+		if (cardInGround[j][0].type==trump and cardInGround[j][0].name==cardNumber.jack):
+			return self.locationInPlayedCard
+		elif (testcard.type==coloralt and testcard.name==cardNumber.jack):
+			if ( JackTrumpPlayed ==False):
+				return self.locationInPlayedCard
+		#the cards is trump
+		#it will win if the winner hasn't played trump
+		#or if it's a higher trump
+		elif (testcard.type==trump and trump!=startingsuit):
+			if ( JackTrumpPlayed ==False and JackAltPlayed ==False ):
+				if (cardInGround[currentwinner - playerwhostarted][0].type==trump)
+					if (testcard.name>cardInGround[currentwinner - playerwhostarted][0].name):
+						currentwinnder = self.locationInPlayedCard
+				else:
+					currentwinnder = self.locationInPlayedCard
+		#if we are playing the starting suit
+		#and everyone followed suite and no power cards were played including 2s
+		#then if you are playing the higher card you win
+		elif (testcard.type==startingsuit):
+			if  ( JackTrumpPlayed ==False and JackAltPlayed ==False and FollowedSuite == True and Playedthe2 == False):		
+				if (cardInGround[currentwinner - playerwhostarted][0].type==startingsuit and testcard.name>cardInGround[currentwinner - playerwhostarted][0].name):
+					currentwinnder = self.locationInPlayedCard
+		#if you have the 2 and everyone followed suite
+		#and  no power cards were played
+		elif (testcard.type==startingsuit and testcard.name == 1 and FollowedSuite == True):
+			#don't need to test for 2 here.. if everyone followed suite then this shoudl be the only 2
+			if  ( JackTrumpPlayed ==False and JackAltPlayed ==False ):
+				currentwinnder = self.locationInPlayedCard
+		return currentwinner
 		
 	def PointsPlayed(self,cardInGround):
 	#returns the number of points played in this hand so far
