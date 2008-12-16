@@ -506,31 +506,31 @@ class background:
 				
 			indD+=1
 			if self.turnPlay==1 and self.player1.currentPlay==None:
-				print "1"
+				#print "1"
 				self.selectedCard=self.player1.play(self.tmpPlayedCard,self.playedCards,self.numOfDeckPlay,self.players,self.bidnumber,self.bidsuite,self.Napoleon,self.General)
 				self.player1.currentPlay=self.selectedCard
 				#move card to ground
 				self.moveCardSlowly(self.selectedCard,screenPlayer1[14])
 				self.tmpPlayedCard.append([self.selectedCard,1])
-				print "Player 1 play ",self.selectedCard.name
+				print "Player 1 plays ",self.selectedCard.name, " of ", self.selectedCard.type
 				self.selectedCard=None
 			elif self.turnPlay==2 and self.player2.currentPlay==None:
-				print "2"
+				#print "2"
 				self.selectedCard=self.player2.play(self.tmpPlayedCard,self.playedCards,self.numOfDeckPlay,self.players,self.bidnumber,self.bidsuite,self.Napoleon,self.General)
 				self.player2.currentPlay=self.selectedCard
 				self.moveCardSlowly(self.selectedCard,screenPlayer2[14])
 				self.tmpPlayedCard.append([self.selectedCard,2])
-				print "Player 2 play ",self.selectedCard.name
+				print "Player 2 plays ",self.selectedCard.name, " of ", self.selectedCard.type
 				self.selectedCard=None
 
 			elif self.turnPlay==3 and self.player3.currentPlay==None:
-				print "3"
+				#print "3"
 				self.selectedCard=self.player3.play(self.tmpPlayedCard,self.playedCards,self.numOfDeckPlay,self.players,self.bidnumber,self.bidsuite,self.Napoleon,self.General)
 				
 				self.player3.currentPlay=self.selectedCard
 				self.moveCardSlowly(self.selectedCard,screenPlayer3[14])
 				self.tmpPlayedCard.append([self.selectedCard,3])
-				print "Player 3 play ",self.selectedCard.name
+				print "Player 3 plays ",self.selectedCard.name, " of ", self.selectedCard.type
 				self.selectedCard=None
 				#pygame.time.delay(500)
 

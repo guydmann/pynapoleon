@@ -136,9 +136,9 @@ class Player:
 
 
 	def selectGeneralCard(self):
-		self.selectedGeneralCard=[]
+		self.selectedGeneralCard=[13,2]
 		if self.hasAceSpades==False:
-			self.selectedGeneralCard=[13,2]
+			return self.selectedGeneralCard
 		elif self.hasJackOfTrump==False:
 			self.selectedGeneralCard=[10,self.currentbidsuite]
 		elif self.hasJackOfColor==False:
@@ -167,15 +167,13 @@ class Player:
 				for i in range (13,2):
 					hasCard=False
 					inSuite=None
-					for j in range (1,4):
-						for card in self.cardsInHand:
-							if card.type==j and card.name==i:
-								hasCard=True
-								inSuite=j
-								break
-						if hasCard==False:
-							self.selectedGeneralCard=[i,j]	
+					for card in self.cardsInHand:
+						if card.name==i:
+							hasCard=True
+							inSuite=card.type
 							break
+					if hasCard==False:
+						self.selectedGeneralCard=[i,inSuite]	
 		return self.selectedGeneralCard
 	
 	
@@ -344,7 +342,7 @@ class Player:
 		for j in range(0,len(cardInGround)):
 			if cardInGround[j][0].name>=9:
 				pointsplayed=pointsplayed+1
-		print "points played: %d\n" % (pointsplayed ,)
+		#print "points played: %d\n" % (pointsplayed ,)
 		return pointsplayed
 		
 	def play(self,cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General):
