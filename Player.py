@@ -345,14 +345,108 @@ class Player:
 		return pointsplayed
 		
 	def play(self,cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General):
-		return self.playStratN1(cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General)
+		#return self.playStratN1(cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General)
+		return self.playStratSimple(cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General)
 
 	
+	#this will be a much simpler strategy for the purposes of getting this started
+	#basically the idea is that every player will be out for their own points
+	#not very strategic as far as the general goes but lets see how it goes
+	def playStratSimple(self,cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General):
+		retcard=None
+		self.analayzLastDeck(playedCard)
+		pointsplayed=self.PointsPlayed(cardInGround)
+
+		#if there are cards already played
+		if len(cardInGround)!=0:
+			if self.hastThisType(cardInGround[0][0].type)==True:
+				if (pointsplayed > 0):
+				#now try to play bigger One
+					maxCardToPlay=0
+					for card in self.cardsInHand:
+						if card.isPlayed==False and card.name>maxCardToPlay and card.type==cardInGround[0][0].type :
+							if (self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard):
+								maxCardToPlay=card.name
+								retcard=card
+					if retcard:
+						if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+							return self.setAsPlay(retcard)
+						else:
+							retcard=None
+					else:
+						minCardToPlay=15
+						for card in self.cardsInHand:
+							if card.isPlayed==False and card.name<minCardToPlay and card.type==cardInGround[0][0].type :
+									minCardToPlay=card.name
+									retcard=card
+						if retcard:
+							if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+								return self.setAsPlay(retcard)
+							else:
+								retcard=None	
+				else:
+				#no points played.  not trying to win this
+
+					minCardToPlay=15
+					for card in self.cardsInHand:
+						if (pointsplayed > 0):
+							if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+								return self.setAsPlay(card)
+						if (card.isPlayed==False and card.name<minCardToPlay):
+								minCardToPlay=card.name
+								retcard=card
+					if retcard:
+						if ( self.checkPlayCard(retcard, cardInGround, numOfDeckPlay)):
+							return self.setAsPlay(retcard)
+						else:
+							retcard=None		
+							
+
+			else:
+				#doesn't have the type played so is free to play anything
+				#want to consider how to snipe with trump if there are points
+				minCardToPlay=15
+				for card in self.cardsInHand:
+					if (pointsplayed > 0):
+						if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+							return self.setAsPlay(card)
+					if (card.isPlayed==False and card.name<minCardToPlay):
+							minCardToPlay=card.name
+							retcard=card
+				if retcard:
+					if ( self.checkPlayCard(retcard, cardInGround, numOfDeckPlay)):
+						return self.setAsPlay(retcard)
+					else:
+						retcard=None	
+		else:
+			#here we will need to determine how far along the game is and then figure out what we can let go of
+			#for now however it is being dumb and going to play a high card.  this will need to be changed. but i want to get it up and running
+			maxCardToPlay=0
+			for card in self.cardsInHand:
+				if card.isPlayed==False and card.name>maxCardToPlay and self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+					maxCardToPlay=card.name
+					retcard=card
+					#need a who will win that considers all the cards that have already been played
+					#and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard 
+			if retcard:
+				if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+					return self.setAsPlay(retcard)
+				else:
+					retcard=None
+			
+
+		if retcard==None:
+		#Ok stupid ! play every thinh you want ! I dont know how much must learn you Hearts Game :P
+			for i in range(0,13):
+				if self.cardsInHand[i].isPlayed==False:
+					if self.checkPlayCard(self.cardsInHand[i], cardInGround, numOfDeckPlay):
+						retcard=self.cardsInHand[i]
+		return retcard
 
 	def playStratN1(self,cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General):
 		retcard=None
 		self.analayzLastDeck(playedCard)
-		pointsplayed=0
+		pointsplayed=self.PointsPlayed(cardInGround)
 		
 		if self.isNapoleon==True:
 			#player is his own general
@@ -361,23 +455,46 @@ class Player:
 				#if there are cards already played
 				if len(cardInGround)!=0:
 					if self.hastThisType(cardInGround[0][0].type)==True:
+						if (pointsplayed > 0):
 						#now try to play bigger One
-						maxCardToPlay=0
-						for card in self.cardsInHand:
-							if card.isPlayed==False and card.name>maxCardToPlay and card.type==cardInGround[0][0].type :
-								maxCardToPlay=card.name
-								retcard=card
-						if retcard:
-							if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
-								return self.setAsPlay(retcard)
+							maxCardToPlay=0
+							for card in self.cardsInHand:
+								if card.isPlayed==False and card.name>maxCardToPlay and card.type==cardInGround[0][0].type :
+									if (self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard):
+										maxCardToPlay=card.name
+										retcard=card
+							if retcard:
+								if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+									return self.setAsPlay(retcard)
+								else:
+									retcard=None
 							else:
-								retcard=None
+								minCardToPlay=0
+								for card in self.cardsInHand:
+									if card.isPlayed==False and card.name<maxCardToPlay and card.type==cardInGround[0][0].type :
+											minCardToPlay=card.name
+											retcard=card
+								if retcard:
+									if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+										return self.setAsPlay(retcard)
+									else:
+										retcard=None	
+						else:
+						#no points played.  not trying to win this
+							minCardToPlay=0
+							for card in self.cardsInHand:
+								if card.isPlayed==False and card.name<maxCardToPlay and card.type==cardInGround[0][0].type :
+										minCardToPlay=card.name
+										retcard=card
+							if retcard:
+								if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+									return self.setAsPlay(retcard)
+								else:
+									retcard=None											
 					else:
 						#now has not this type try to play small card but no play hearts
 						minCardToPlay=15
 						for card in self.cardsInHand:
-							if card.type==cardType.Hearts:
-							       continue
 							if card.name<minCardToPlay and card.isPlayed==False:
 							       minCardToPlay=card.name
 							       retcard=card
@@ -404,7 +521,6 @@ class Player:
 			#player is napoleon and the general is known
 			elif General!=None:
 				if len(cardInGround)!=0:
-					pointsplayed=self.PointsPlayed(cardInGround)
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
 					if self.hastThisType(cardInGround[0][0].type)==True:
@@ -453,7 +569,6 @@ class Player:
 			#player is napoleon and the general is unknown
 			else:
 				if len(cardInGround)!=0:
-					pointsplayed=self.PointsPlayed(cardInGround)
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
 					if self.hastThisType(cardInGround[0][0].type)==True:
@@ -504,7 +619,6 @@ class Player:
 			#this code won't be used until there is a pot because the computer user will currently never pick one of their cards as general
 			if self.isGeneral==True:
 				if len(cardInGround)!=0:
-					pointsplayed=self.PointsPlayed(cardInGround)
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
 					if self.hastThisType(cardInGround[0][0].type)==True:
@@ -553,7 +667,6 @@ class Player:
 			#player not napoleon or general and the general is known
 			elif General!=None:
 				if len(cardInGround)!=0:
-					pointsplayed=self.PointsPlayed(cardInGround)
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
 					if self.hastThisType(cardInGround[0][0].type)==True:
@@ -601,7 +714,6 @@ class Player:
 			#player is not napoleon and the general is unknown
 			else:
 				if len(cardInGround)!=0:
-					pointsplayed=self.PointsPlayed(cardInGround)
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
 					if self.hastThisType(cardInGround[0][0].type)==True:
