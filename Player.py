@@ -266,7 +266,7 @@ class Player:
 			coloralt = 5		
 		
 		#if you play the ace of spades you win the hand, easy short circuit
-		if (testcard.type==2 and testcard.name==cardNumber.Ace):
+		if (testcard.type==1 and testcard.name==cardNumber.Ace):
 			return self.locationInPlayedCard		
 		for j in range(0,len(cardInGround)):
 			#test for following suite
@@ -527,7 +527,11 @@ class Player:
 				for card in self.cardsInHand:
 					if card.isPlayed==False and card.name==1 and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 						return self.setAsPlay(card)
-			#else:
+			else:
+				for card in self.cardsInHand:
+					#on the first hand try to play an ace that is not the ace of trump and not the ace of spades
+					if card.isPlayed==False and card.name==13 and card.type!=Trump and card.type!=1 and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+						return self.setAsPlay(card)
 			maxCardToPlay=0
 			for card in self.cardsInHand:
 				if card.isPlayed==False and card.name>maxCardToPlay and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
