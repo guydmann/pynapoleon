@@ -444,6 +444,114 @@ class Player:
 						retcard=self.cardsInHand[i]
 		return retcard
 
+	
+	#ok so this will be an extension of stratSimple, but we will take into account 
+	#2s, so we will need to make sure it's not the first hand and everyone has followed suite, or that everyone so far has followed suite and it is an early hand
+	#    this could get more complex in the future and check if anyone has gone out.. but really it should play the 2 as soon as a suite come out, or it should start with the 2 if 
+	#    the hand is early and it has the lead
+	#
+	def playStratSimplePlus(self,cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General):
+		retcard=None
+		self.analayzLastDeck(playedCard)
+		pointsplayed=self.PointsPlayed(cardInGround)
+
+		#if there are cards already played
+		if len(cardInGround)!=0:
+			if self.hastThisType(cardInGround[0][0].type)==True:
+				if numOfDeckPlay>1:
+					for card in self.cardsInHand:
+						if card.isPlayed==False and card.name==2 and card.type==cardInGround[0][0].type and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+							return self.setAsPlay(retcard)
+				if (pointsplayed > 0):
+				#now try to play bigger One
+					maxCardToPlay=0
+					for card in self.cardsInHand:
+						if card.isPlayed==False and card.name>maxCardToPlay and card.type==cardInGround[0][0].type :
+							if (self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard):
+								maxCardToPlay=card.name
+								retcard=card
+					if retcard:
+						if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+							return self.setAsPlay(retcard)
+						else:
+							retcard=None
+					else:
+						minCardToPlay=15
+						for card in self.cardsInHand:
+							if card.isPlayed==False and card.name<minCardToPlay and card.type==cardInGround[0][0].type :
+									minCardToPlay=card.name
+									retcard=card
+						if retcard:
+							if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+								return self.setAsPlay(retcard)
+							else:
+								retcard=None	
+				else:
+				#no points played.  not trying to win this
+
+					minCardToPlay=15
+					for card in self.cardsInHand:
+						if (pointsplayed > 0):
+							if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+								return self.setAsPlay(card)
+						if (card.isPlayed==False and card.name<minCardToPlay):
+								minCardToPlay=card.name
+								retcard=card
+					if retcard:
+						if ( self.checkPlayCard(retcard, cardInGround, numOfDeckPlay)):
+							return self.setAsPlay(retcard)
+						else:
+							retcard=None		
+							
+
+			else:
+				#doesn't have the type played so is free to play anything
+				#want to consider how to snipe with trump if there are points
+				minCardToPlay=15
+				for card in self.cardsInHand:
+					if (pointsplayed > 0):
+						if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+							return self.setAsPlay(card)
+					if (card.isPlayed==False and card.name<minCardToPlay):
+							minCardToPlay=card.name
+							retcard=card
+				if retcard:
+					if ( self.checkPlayCard(retcard, cardInGround, numOfDeckPlay)):
+						return self.setAsPlay(retcard)
+					else:
+						retcard=None	
+		else:
+			#here we will need to determine how far along the game is and then figure out what we can let go of
+			#for now however it is being dumb and going to play a high card.  this will need to be changed. but i want to get it up and running
+			if numOfDeckPlay>1:
+				for card in self.cardsInHand:
+					if card.isPlayed==False and card.name==2 and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+						return self.setAsPlay(retcard)
+			maxCardToPlay=0
+			for card in self.cardsInHand:
+				if card.isPlayed==False and card.name>maxCardToPlay and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+					maxCardToPlay=card.name
+					retcard=card
+					#need a who will win that considers all the cards that have already been played
+					#and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard 
+			if retcard:
+				if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+					return self.setAsPlay(retcard)
+				else:
+					retcard=None
+			
+
+		if retcard==None:
+		#Ok stupid ! play every thinh you want ! I dont know how much must learn you Napoleon Game :P
+			for i in range(0,13):
+				if self.cardsInHand[i].isPlayed==False:
+					if self.checkPlayCard(self.cardsInHand[i], cardInGround, numOfDeckPlay):
+						retcard=self.cardsInHand[i]
+		return retcard
+
+
+
+
 	def playStratN1(self,cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General):
 		retcard=None
 		self.analayzLastDeck(playedCard)
