@@ -527,7 +527,7 @@ class Player:
 				for card in self.cardsInHand:
 					if card.isPlayed==False and card.name==1 and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 						return self.setAsPlay(card)
-			else
+			#else:
 			maxCardToPlay=0
 			for card in self.cardsInHand:
 				if card.isPlayed==False and card.name>maxCardToPlay and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
