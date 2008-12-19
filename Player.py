@@ -347,7 +347,7 @@ class Player:
 		
 	def play(self,cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General):
 		#return self.playStratN1(cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General)
-		return self.playStratSimple(cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General)
+		return self.playStratSimplePlus(cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General)
 
 	
 	#this will be a much simpler strategy for the purposes of getting this started
@@ -460,8 +460,8 @@ class Player:
 			if self.hastThisType(cardInGround[0][0].type)==True:
 				if numOfDeckPlay>1:
 					for card in self.cardsInHand:
-						if card.isPlayed==False and card.name==2 and card.type==cardInGround[0][0].type and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
-							return self.setAsPlay(retcard)
+						if card.isPlayed==False and card.name==1 and card.type==cardInGround[0][0].type and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+							return self.setAsPlay(card)
 				if (pointsplayed > 0):
 				#now try to play bigger One
 					maxCardToPlay=0
@@ -494,7 +494,7 @@ class Player:
 						if (pointsplayed > 0):
 							if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 								return self.setAsPlay(card)
-						if (card.isPlayed==False and card.name<minCardToPlay):
+						if (card.isPlayed==False and card.name<minCardToPlay and  card.name!=1):
 								minCardToPlay=card.name
 								retcard=card
 					if retcard:
@@ -512,7 +512,7 @@ class Player:
 					if (pointsplayed > 0):
 						if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 							return self.setAsPlay(card)
-					if (card.isPlayed==False and card.name<minCardToPlay):
+					if (card.isPlayed==False and card.name<minCardToPlay and card.name!=1):
 							minCardToPlay=card.name
 							retcard=card
 				if retcard:
@@ -525,8 +525,8 @@ class Player:
 			#for now however it is being dumb and going to play a high card.  this will need to be changed. but i want to get it up and running
 			if numOfDeckPlay>1:
 				for card in self.cardsInHand:
-					if card.isPlayed==False and card.name==2 and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
-						return self.setAsPlay(retcard)
+					if card.isPlayed==False and card.name==1 and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+						return self.setAsPlay(card)
 			maxCardToPlay=0
 			for card in self.cardsInHand:
 				if card.isPlayed==False and card.name>maxCardToPlay and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
@@ -878,8 +878,6 @@ class Player:
 
 	def setAsPlay(self,card):
 		card.isPlayed=True
-		if card.name==cardNumber.queen and cardType.Spades==card.type:
-			self.hasQueenSpades=False
 		return card
 
 	def removeCards(self):
