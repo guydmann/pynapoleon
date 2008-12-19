@@ -458,7 +458,7 @@ class Player:
 		#if there are cards already played
 		if len(cardInGround)!=0:
 			if self.hastThisType(cardInGround[0][0].type)==True:
-				if numOfDeckPlay>1:
+				if numOfDeckPlay>0:
 					for card in self.cardsInHand:
 						if card.isPlayed==False and card.name==1 and card.type==cardInGround[0][0].type and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 							return self.setAsPlay(card)
@@ -523,10 +523,11 @@ class Player:
 		else:
 			#here we will need to determine how far along the game is and then figure out what we can let go of
 			#for now however it is being dumb and going to play a high card.  this will need to be changed. but i want to get it up and running
-			if numOfDeckPlay>1:
+			if numOfDeckPlay>0:
 				for card in self.cardsInHand:
 					if card.isPlayed==False and card.name==1 and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 						return self.setAsPlay(card)
+			else
 			maxCardToPlay=0
 			for card in self.cardsInHand:
 				if card.isPlayed==False and card.name>maxCardToPlay and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
