@@ -521,15 +521,19 @@ class Player:
 					else:
 						retcard=None	
 		else:
-			#here we will need to determine how far along the game is and then figure out what we can let go of
-			#for now however it is being dumb and going to play a high card.  this will need to be changed. but i want to get it up and running
+		#Player has to start the hand
+		#this is the hardest part of playing because we have no one to try and beat
+			
+				#here we will need to determine how far along the game is and then figure out what we can let go of
+			
 			if numOfDeckPlay>0:
+			#it is not the first hand so try and play a 2
 				for card in self.cardsInHand:
 					if card.isPlayed==False and card.name==1 and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 						return self.setAsPlay(card)
 			else:
+			#on the first hand try to play an ace that is not the ace of trump and not the ace of spades
 				for card in self.cardsInHand:
-					#on the first hand try to play an ace that is not the ace of trump and not the ace of spades
 					if card.isPlayed==False and card.name==13 and card.type!=Trump and card.type!=1 and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 						return self.setAsPlay(card)
 			#ok here we have tried to play an ace(first hand) or a 2(not the first hand)
@@ -963,7 +967,14 @@ class Player:
 				if self.cardsInHand[i].type==type:
 					return True
 		return False
-
+		
+	def howManyOfType(self,type):   
+		count = 0
+		for i in range(0,13):
+			if self.cardsInHand[i].isPlayed==False:
+				if self.cardsInHand[i].type==type:
+					count+=1
+		return count
 
 	def checkPlayCard(self,cardToPlay,cardInGround,numOfDeckPlay):
 		if len(cardInGround)!=0:
