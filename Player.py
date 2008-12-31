@@ -360,7 +360,7 @@ class Player:
 
 		#if there are cards already played
 		if len(cardInGround)!=0:
-			if self.hastThisType(cardInGround[0][0].type)==True:
+			if self.hasThisType(cardInGround[0][0].type)==True:
 				if (pointsplayed > 0):
 				#now try to play bigger One
 					maxCardToPlay=0
@@ -457,7 +457,7 @@ class Player:
 
 		#if there are cards already played
 		if len(cardInGround)!=0:
-			if self.hastThisType(cardInGround[0][0].type)==True:
+			if self.hasThisType(cardInGround[0][0].type)==True:
 				if numOfDeckPlay>0:
 					for card in self.cardsInHand:
 						if card.isPlayed==False and card.name==1 and card.type==cardInGround[0][0].type and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
@@ -532,6 +532,9 @@ class Player:
 					#on the first hand try to play an ace that is not the ace of trump and not the ace of spades
 					if card.isPlayed==False and card.name==13 and card.type!=Trump and card.type!=1 and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 						return self.setAsPlay(card)
+			#ok here we have tried to play an ace(first hand) or a 2(not the first hand)
+			#we should try and void from all none trump suites.  as long as the card to use to void isn't a power card
+			
 			maxCardToPlay=0
 			for card in self.cardsInHand:
 				if card.isPlayed==False and card.name>maxCardToPlay and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
@@ -557,6 +560,7 @@ class Player:
 
 
 
+	#this is the start of a way more complicated strategy that takes into account if the player is Napoleon or general
 	def playStratN1(self,cardInGround,playedCard,numOfDeckPlay,Players,Bid,Trump, Napoleon, General):
 		retcard=None
 		self.analayzLastDeck(playedCard)
@@ -568,7 +572,7 @@ class Player:
 			if self.isGeneral==True:
 				#if there are cards already played
 				if len(cardInGround)!=0:
-					if self.hastThisType(cardInGround[0][0].type)==True:
+					if self.hasThisType(cardInGround[0][0].type)==True:
 						if (pointsplayed > 0):
 						#now try to play bigger One
 							maxCardToPlay=0
@@ -637,7 +641,7 @@ class Player:
 				if len(cardInGround)!=0:
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
-					if self.hastThisType(cardInGround[0][0].type)==True:
+					if self.hasThisType(cardInGround[0][0].type)==True:
 						if pointsplayed>0 or len(cardInGround)<2:
 							#if there are points played then we try and play higher
 							maxCardToPlay=0
@@ -685,7 +689,7 @@ class Player:
 				if len(cardInGround)!=0:
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
-					if self.hastThisType(cardInGround[0][0].type)==True:
+					if self.hasThisType(cardInGround[0][0].type)==True:
 						if pointsplayed>0 or len(cardInGround)<2:
 							#if there are points played then we try and play higher
 							maxCardToPlay=0
@@ -735,7 +739,7 @@ class Player:
 				if len(cardInGround)!=0:
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
-					if self.hastThisType(cardInGround[0][0].type)==True:
+					if self.hasThisType(cardInGround[0][0].type)==True:
 						if pointsplayed>0 or len(cardInGround)<2:
 							#if there are points played then we try and play higher
 							maxCardToPlay=0
@@ -783,7 +787,7 @@ class Player:
 				if len(cardInGround)!=0:
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
-					if self.hastThisType(cardInGround[0][0].type)==True:
+					if self.hasThisType(cardInGround[0][0].type)==True:
 						if self.pointsplayed>0 or len(cardInGround)<2:
 							#if there are points played then we try and play higher
 							maxCardToPlay=0
@@ -830,7 +834,7 @@ class Player:
 				if len(cardInGround)!=0:
 					#tests to see if the player has the suite of the first card
 					#does the player have to follow suite
-					if self.hastThisType(cardInGround[0][0].type)==True:
+					if self.hasThisType(cardInGround[0][0].type)==True:
 						if pointsplayed>0 or len(cardInGround)<2:
 							#if there are points played then we try and play higher
 							maxCardToPlay=0
@@ -933,7 +937,7 @@ class Player:
 					self.showCard(i, screen)
 
 
-	def getForentCardImg(self,index):
+	def getFrontCardImg(self,index):
 		cardimg,cardrct=self.cardsInHand[index].getfrontImage()
 		return cardimg
 
@@ -953,7 +957,7 @@ class Player:
 			cardimg,cardrct=self.cardsInHand[index].getBackImage()
 		return cardimg
 
-	def hastThisType(self,type):   
+	def hasThisType(self,type):   
 		for i in range(0,13):
 			if self.cardsInHand[i].isPlayed==False:
 				if self.cardsInHand[i].type==type:
@@ -962,30 +966,10 @@ class Player:
 
 
 	def checkPlayCard(self,cardToPlay,cardInGround,numOfDeckPlay):
-#		if(numOfDeckPlay==0):
-#			if len(cardInGround)==0:
-#				if cardToPlay.type==cardType.Clubs:
-#					if cardToPlay.name==cardNumber.num2 :
-#						return True
-#					self.errorMsg="You Must Start Game with 2 Clubs, Come on Don't Be Stupid !"
-#					return False
-#				if(cardToPlay.type==cardType.Hearts):
-#					self.errorMsg="In First Deck You Can not Play With Hearts, Do You Know How To Play?"
-#					return False
-#				if(cardToPlay.type==cardType.Spades and cardToPlay.name==cardNumber.queen):
-#					self.errorMsg="In First Deck You Can Not Play With Queen Of Spades , Do You Know How To Play? "
-#					return False
-#		if len(cardInGround)==0:
-#			if(self.isPlayHeart==False  and cardToPlay.type==cardType.Hearts):
-#				self.errorMsg="You Can Not Play Hearts Now ! Take Another Card"
-#				return False
-#		else:
 		if len(cardInGround)!=0:
 			if cardToPlay.type!=cardInGround[0][0].type:
-				if self.hastThisType(cardInGround[0][0].type):
-					self.errorMsg="Check Your Card To Play,You Should Play Card As Type First Deck"
+				if self.hasThisType(cardInGround[0][0].type):
+					self.errorMsg="Please Play The Same Suite As the First Card"
 					return False
-#		if(cardToPlay.type==cardType.Hearts) :     
-#			self.isPlayHeart=True
 		self.errorMsg=None
 		return True

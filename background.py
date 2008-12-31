@@ -834,7 +834,7 @@ class background:
 #				return False
 
 			if cardToPlay.type!=self.tmpPlayedCard[0][0].type:
-				if player.hastThisType(self.tmpPlayedCard[0][0].type):
+				if player.hasThisType(self.tmpPlayedCard[0][0].type):
 				    self.errorMsg="Check Your Card To Play,You Should Play Card As Type First Deck"
 				    return False
 #		if(cardToPlay.type==cardType.Hearts) :     
