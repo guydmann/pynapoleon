@@ -266,7 +266,7 @@ class Player:
 			coloralt = 5		
 		
 		#if you play the ace of spades you win the hand, easy short circuit
-		if (testcard.type==1 and testcard.name==cardNumber.Ace):
+		if (testcard.type==2 and testcard.name==cardNumber.Ace):
 			return self.locationInPlayedCard		
 		for j in range(0,len(cardInGround)):
 			#test for following suite
@@ -534,10 +534,11 @@ class Player:
 			else:
 			#on the first hand try to play an ace that is not the ace of trump and not the ace of spades
 				for card in self.cardsInHand:
-					if card.isPlayed==False and card.name==13 and card.type!=Trump and card.type!=1 and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+					if card.isPlayed==False and card.name==13 and card.type!=Trump and card.type!=2 and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 						return self.setAsPlay(card)
 			#ok here we have tried to play an ace(first hand) or a 2(not the first hand)
 			#we should try and void from all none trump suites.  as long as the card to use to void isn't a power card
+			#countofsuite = howManyOfType(type)
 			
 			maxCardToPlay=0
 			for card in self.cardsInHand:
