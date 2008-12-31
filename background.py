@@ -499,7 +499,7 @@ class background:
 								pygame.display.flip()  
 					#self.tmpGeneralCardNumber=None
 					#self.tmpGeneralCardSuite=None
-				print "the general card is %d of %d" % (self.GeneralCardNumber, self.GeneralCardSuite,)
+				print "the general card is %d of %d" % (textnumber(self.GeneralCardNumber), textsuite(self.GeneralCardSuite))
 				self.player1.analayzHand(self.bidsuite,self.GeneralCardNumber, self.GeneralCardSuite)
 				self.player2.analayzHand(self.bidsuite,self.GeneralCardNumber, self.GeneralCardSuite)
 				self.player3.analayzHand(self.bidsuite,self.GeneralCardNumber, self.GeneralCardSuite)
@@ -512,7 +512,7 @@ class background:
 				#move card to ground
 				self.moveCardSlowly(self.selectedCard,screenPlayer1[14])
 				self.tmpPlayedCard.append([self.selectedCard,1])
-				print "Player 1 plays ",self.selectedCard.name, " of ", self.selectedCard.type
+				print "Player 1 plays ", textcardnumber(self.selectedCard.name), " of ", textsuite(self.selectedCard.type)
 				self.selectedCard=None
 			elif self.turnPlay==2 and self.player2.currentPlay==None:
 				#print "2"
@@ -520,7 +520,7 @@ class background:
 				self.player2.currentPlay=self.selectedCard
 				self.moveCardSlowly(self.selectedCard,screenPlayer2[14])
 				self.tmpPlayedCard.append([self.selectedCard,2])
-				print "Player 2 plays ",self.selectedCard.name, " of ", self.selectedCard.type
+				print "Player 2 plays ", textcardnumber(self.selectedCard.name), " of ", textsuite(self.selectedCard.type)
 				self.selectedCard=None
 
 			elif self.turnPlay==3 and self.player3.currentPlay==None:
@@ -530,7 +530,7 @@ class background:
 				self.player3.currentPlay=self.selectedCard
 				self.moveCardSlowly(self.selectedCard,screenPlayer3[14])
 				self.tmpPlayedCard.append([self.selectedCard,3])
-				print "Player 3 plays ",self.selectedCard.name, " of ", self.selectedCard.type
+				print "Player 3 plays ", textcardnumber(self.selectedCard.name), " of ", textsuite(self.selectedCard.type)
 				self.selectedCard=None
 				#pygame.time.delay(500)
 
