@@ -136,9 +136,9 @@ class Player:
 
 
 	def selectGeneralCard(self):
-		self.selectedGeneralCard=[13,2]
+		self.selectedGeneralCard=None
 		if self.hasAceSpades==False:
-			return self.selectedGeneralCard
+			self.selectedGeneralCard=[13,2]
 		elif self.hasJackOfTrump==False:
 			self.selectedGeneralCard=[10,self.currentbidsuite]
 		elif self.hasJackOfColor==False:
@@ -163,7 +163,7 @@ class Player:
 				if hasCard==False:
 					self.selectedGeneralCard=[i,self.currentbidsuite]	
 					break
-			if len(self.selectedGeneralCard)==0:
+			if self.selectedGeneralCard==None:
 				for i in range (13,2):
 					hasCard=False
 					inSuite=None
@@ -539,7 +539,28 @@ class Player:
 			#ok here we have tried to play an ace(first hand) or a 2(not the first hand)
 			#we should try and void from all none trump suites.  as long as the card to use to void isn't a power card
 			#countofsuite = howManyOfType(type)
+			MinCardsinSuite=13
+			SuiteWithMinCardsinSuite=None
+			for i in range(1,4):
+				if i != Trump:
+					countofsuite = self.howManyOfType(i)
+					if countofsuite<MinCardsinSuite and countofsuite >0:
+						MinCardsinSuite = countofsuite
+						SuiteWithMinCardsinSuite = i
+			minCardToPlay=13
+			for card in self.cardsInHand:
+				if card.isPlayed==False and card.name<minCardToPlay and card.type==SuiteWithMinCardsinSuite and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+					minCardToPlay=card.name
+					retcard=card
+					#need a who will win that considers all the cards that have already been played
+					#and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard 
+			if retcard:
+				if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+					return self.setAsPlay(retcard)
+				else:
+					retcard=None			
 			
+			#below code picks the highest card to play.  it's stupid	
 			maxCardToPlay=0
 			for card in self.cardsInHand:
 				if card.isPlayed==False and card.name>maxCardToPlay and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
