@@ -478,7 +478,7 @@ class Player:
 					else:
 						minCardToPlay=15
 						for card in self.cardsInHand:
-							if card.isPlayed==False and card.name<minCardToPlay and card.type==cardInGround[0][0].type :
+							if card.isPlayed==False and card.name<minCardToPlay and card.type==cardInGround[0][0].type and card.name>1 :
 									minCardToPlay=card.name
 									retcard=card
 						if retcard:
