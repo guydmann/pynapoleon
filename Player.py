@@ -455,8 +455,89 @@ class Player:
 		self.analayzLastDeck(playedCard)
 		pointsplayed=self.PointsPlayed(cardInGround)
 
+		#if you are the last one to play
+		if len(cardInGround)==3:
+			if self.hasThisType(cardInGround[0][0].type)==True:
+				if numOfDeckPlay>0:
+					for card in self.cardsInHand:
+						if card.isPlayed==False and card.name==1 and card.type==cardInGround[0][0].type and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+							return self.setAsPlay(card)
+				if (pointsplayed > 0):
+				#test if general
+					#if napoleon is winning 
+						#try and feed him points
+						#not power cards though
+				#check if napoleonn
+					#if general is known and general is winning
+						#try to feed him points
+						#not power cards
+				#not napoleon and not general
+				#test if general is known
+				#if general is known
+					#if the person who is not the general and not the napoleon is winning feed points
+				#if general is unknown
+					#if a player who is not the napoleon is winning
+					#and we don't have anything that can beat them maybe give them a point, but nothing good at all
+					
+				#now try to play bigger One
+					maxCardToPlay=0
+					for card in self.cardsInHand:
+						if card.isPlayed==False and card.name>maxCardToPlay and card.type==cardInGround[0][0].type :
+							if (self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard):
+								maxCardToPlay=card.name
+								retcard=card
+					if retcard:
+						if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+							return self.setAsPlay(retcard)
+						else:
+							retcard=None
+					else:
+						minCardToPlay=15
+						for card in self.cardsInHand:
+							if card.isPlayed==False and card.name<minCardToPlay and card.type==cardInGround[0][0].type and card.name>1 :
+									minCardToPlay=card.name
+									retcard=card
+						if retcard:
+							if self.checkPlayCard(retcard, cardInGround, numOfDeckPlay):
+								return self.setAsPlay(retcard)
+							else:
+								retcard=None	
+				else:
+				#no points played.  not trying to win this
+
+					minCardToPlay=15
+					for card in self.cardsInHand:
+						if (pointsplayed > 0):
+							if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+								return self.setAsPlay(card)
+						if (card.isPlayed==False and card.name<minCardToPlay and  card.name>1):
+								minCardToPlay=card.name
+								retcard=card
+					if retcard:
+						if ( self.checkPlayCard(retcard, cardInGround, numOfDeckPlay)):
+							return self.setAsPlay(retcard)
+						else:
+							retcard=None		
+							
+
+			else:
+				#doesn't have the type played so is free to play anything
+				#want to consider how to snipe with trump if there are points
+				minCardToPlay=15
+				for card in self.cardsInHand:
+					if (pointsplayed > 0):
+						if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
+							return self.setAsPlay(card)
+					if (card.isPlayed==False and card.name<minCardToPlay and card.name>1):
+							minCardToPlay=card.name
+							retcard=card
+				if retcard:
+					if ( self.checkPlayCard(retcard, cardInGround, numOfDeckPlay)):
+						return self.setAsPlay(retcard)
+					else:
+						retcard=None	
 		#if there are cards already played
-		if len(cardInGround)!=0:
+		elif len(cardInGround)!=0:
 			if self.hasThisType(cardInGround[0][0].type)==True:
 				if numOfDeckPlay>0:
 					for card in self.cardsInHand:
@@ -494,7 +575,7 @@ class Player:
 						if (pointsplayed > 0):
 							if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 								return self.setAsPlay(card)
-						if (card.isPlayed==False and card.name<minCardToPlay and  card.name!=1):
+						if (card.isPlayed==False and card.name<minCardToPlay and  card.name>1):
 								minCardToPlay=card.name
 								retcard=card
 					if retcard:
@@ -512,7 +593,7 @@ class Player:
 					if (pointsplayed > 0):
 						if card.isPlayed==False and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
 							return self.setAsPlay(card)
-					if (card.isPlayed==False and card.name<minCardToPlay and card.name!=1):
+					if (card.isPlayed==False and card.name<minCardToPlay and card.name>1):
 							minCardToPlay=card.name
 							retcard=card
 				if retcard:
@@ -541,17 +622,38 @@ class Player:
 			#countofsuite = howManyOfType(type)
 			MinCardsinSuite=13
 			SuiteWithMinCardsinSuite=None
+			MinSuiteWeight=26
 			for i in range(1,4):
 				if i != Trump:
+					#ok so now we are trying a weighting system so they try not to play a suite if they just have point cards and 2
 					countofsuite = self.howManyOfType(i)
-					if countofsuite<MinCardsinSuite and countofsuite >0:
-						MinCardsinSuite = countofsuite
-						SuiteWithMinCardsinSuite = i
+					suiteweight = countofsuite * 2
+					for card in self.cardsInHand:
+						if i == card.type:
+							if card.name>=9:
+								suiteweight = suiteweight + 1
+							if card.name==10:
+								suiteweight = suiteweight + 1								
+							if card.name>12:
+								suiteweight = suiteweight + 1								
+							if card.name==1:
+								suiteweight = suiteweight + 1																
+						if suiteweight<MinSuiteWeight and countofsuite >0:
+							MinCardsinSuite = countofsuite
+							SuiteWithMinCardsinSuite = i
+					#if countofsuite<MinCardsinSuite and countofsuite >0:
+					#		#check if it's ok to void in this suite, here we will subtract the 
+					#	
+					#		#for card in self.cardsInHand:
+					#	MinCardsinSuite = countofsuite
+					#	SuiteWithMinCardsinSuite = i
 			minCardToPlay=13
 			for card in self.cardsInHand:
 				if card.isPlayed==False and card.name<minCardToPlay and card.type==SuiteWithMinCardsinSuite and self.checkPlayCard(card, cardInGround, numOfDeckPlay):
-					minCardToPlay=card.name
-					retcard=card
+					#so it won't lead off with the 2 on the first hand unless it is the only one in that suite
+					if (card.name==1 and (numOfDeckPlay>0 or MinCardsinSuite==1)) or card.name>1:
+						minCardToPlay=card.name
+						retcard=card
 					#need a who will win that considers all the cards that have already been played
 					#and self.WhoWillWin(cardInGround,card, Trump) == self.locationInPlayedCard 
 			if retcard:
