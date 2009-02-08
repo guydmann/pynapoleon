@@ -584,7 +584,7 @@ class background:
 				self.player3.currentPlay.isPlayed=True
 				self.player4.currentPlay.isPlayed=True
 				self.addPlayedCards(self.player1.currentPlay, self.player2.currentPlay, self.player3.currentPlay, self.player4.currentPlay)
-				self.turnPlay=self.howTurnNow(self.player1.currentPlay, self.player2.currentPlay, self.player3.currentPlay, self.player4.currentPlay)
+				self.turnPlay=self.WhoseTurnNow(self.player1.currentPlay, self.player2.currentPlay, self.player3.currentPlay, self.player4.currentPlay)
 				
 				#self.GeneralCardNumber), self.textsuite(self.GeneralCardSuite
 				#if someone plays the general card everyone should know
@@ -680,8 +680,8 @@ class background:
 			pygame.time.delay(50)
 			# DRAWING             
 
-	#check how is turn now
-	def howTurnNow(self,card1,card2,card3,card4):
+	#check whose turn now
+	def WhoseTurnNow(self,card1,card2,card3,card4):
 		print "trump is %d" % ( self.bidsuite, )
 		print "c1:%d,%d" % (card1.type, card1.name)
 		print "c2:%d,%d" % (card2.type, card2.name)
