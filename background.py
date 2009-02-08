@@ -804,43 +804,13 @@ class background:
 
 
 
-	def checkIsPlayHeart(self):
-		for i in range(0,len(self.playedCards)):
-			for j in range(0,4):
-				if self.playedCards[i][j].type==cardType.Hearts:
-					self.isPlayHeart=True
-					return            
-
 	    #check Players Play Correct Card
 	def checkPlayCard(self,cardToPlay,player):
-#		if(self.isPlayHeart==False):
-#		    self.checkIsPlayHeart()
-#		if(self.numOfDeckPlay==0):
-#			if len(self.tmpPlayedCard)==0:
-#				if cardToPlay.type==cardType.Clubs:
-#					if cardToPlay.name==cardNumber.num2 :
-#						return True
-#				self.errorMsg="You Must Start Game with 2 Clubs, Come on Don't Be Stupid !"
-#				return False
-#			if(cardToPlay.type==cardType.Hearts):
-#				self.errorMsg="In First Deck You Can not Play With Hearts, Do You Know How To Play?"
-#				return False
-#			if(cardToPlay.type==cardType.Spades and cardToPlay.name==cardNumber.queen):
-#				self.errorMsg="In First Deck You Can Not Play With Queen Of Spades , Do You Know How To Play? "
-#				return False
 		if len(self.tmpPlayedCard)!=0:
-#			if(self.isPlayHeart==False  and cardToPlay.type==cardType.Hearts):
-#				self.errorMsg="You Can Not Play Hearts Now ! Take Another Card"
-#				return False
-
 			if cardToPlay.type!=self.tmpPlayedCard[0][0].type:
 				if player.hasThisType(self.tmpPlayedCard[0][0].type):
-				    self.errorMsg="Check Your Card To Play,You Should Play Card As Type First Deck"
+				    self.errorMsg="Check your cards, You must follow suite."
 				    return False
-#		if(cardToPlay.type==cardType.Hearts) :     
-#		    self.isPlayHeart=True
-
-
 		self.errorMsg=None
 		return True
 		
