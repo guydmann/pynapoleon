@@ -57,11 +57,41 @@ class Player:
 
 	def addHand(self,card):
 		self.cardsInHand.append(card)
-		card.index=len(self.cardsInHand)-1
+		#card.index=len(self.cardsInHand)-1
 		if card.name==cardNumber.Ace and card.type==cardType.Spades:
 			self.hasAceSpades=True
-		#if card.name==cardNumber.queen and card.type==cardType.Spades:
-		#	self.hasQueenSpades=True
+
+	#===============================================================
+	#
+	#	when the player has obtained the pot then they need to discard down to their maximum hand size
+	#
+	#
+	def discardDownToHandSize(self):
+		if len(self.cardsInHand)-1>12:
+			for card in self.cardsInHand:
+				if card.type!=trump and card.name!=1 and card.name<9:
+					seld.removeFromHand(card)
+					if len(self.cardsInHand)-1==12:
+						break
+		
+
+	#===============================================================
+	#
+	#	needs to remove a specific card from the players ahdn
+	#
+	#
+	def removeFromHand(self,card):	
+		#this will need to remove a card from the hand.. not play the card
+		self.cardsInHand.remove(card)
+		#card.index=len(self.cardsInHand)-1
+		
+		#those need to test if discarding general card
+		
+		if card.name==cardNumber.Ace and card.type==cardType.Spades:
+			self.hasAceSpades=False
+
+
+
 			
 	def analayzLastDeck(self,playedCard):
 

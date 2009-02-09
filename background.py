@@ -419,19 +419,25 @@ class background:
 					self.GeneralCardNumber=self.selectedGeneralCard[0]
 					self.GeneralCardSuite=self.selectedGeneralCard[1]
 					#now give player 1 the pot
+					self.givePlayerPot(self.player1)
 					#and then have them discard down to hand size
+					self.player1.discardDownToHandSize
 				if self.Napoleon==2 :
 					self.selectedGeneralCard=self.player2.selectGeneralCard()
 					self.GeneralCardNumber=self.selectedGeneralCard[0]
 					self.GeneralCardSuite=self.selectedGeneralCard[1]
 					#now give player 2 the pot
+					self.givePlayerPot(self.player2)
 					#and then have them discard down to hand size					
+					self.player2.discardDownToHandSize
 				if self.Napoleon==3:
 					self.selectedGeneralCard=self.player3.selectGeneralCard()
 					self.GeneralCardNumber=self.selectedGeneralCard[0]
 					self.GeneralCardSuite=self.selectedGeneralCard[1]
 					#now give player 3 the pot
+					self.givePlayerPot(self.player3)
 					#and then have them discard down to hand size					
+					self.player3.discardDownToHandSize
 				#============================================================================================
 				#
 				#	player has won the bid and need to select general
@@ -516,6 +522,7 @@ class background:
 								self.showMessage("General Selection: +/- on numpad and 1-5 for suite, enter to select")
 								pygame.display.flip()  
 					#now give player 4 (the player) the pot
+					self.givePlayerPot(self.player4)
 					#and then have them discard down to hand size
 						#this will probably be easiest as another internal loop
 					
@@ -853,6 +860,10 @@ class background:
 		self.player3.refreshHand(self.screen)        
 		#draw cards of player4
 		self.player4.refreshHand(self.screen) 
+
+	def givePlayerPot(self,player):
+		for i in range(0,3):
+			player.addHand(self.pot.cardsInHand[i])
 
 	def showNames(self):
 		"""print players name"""
