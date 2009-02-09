@@ -108,23 +108,25 @@ class cards:
             random.shuffle(self.cardItem)
     
               
-    def deck(self,player1,player2,player3,player4):
+    def deck(self,player1,player2,player3,player4,pot):
         #for i in range(0,52,4):
         #    player1.addHand(self.cardItem[i])
         #    player2.addHand(self.cardItem[i+1])
         #    player3.addHand(self.cardItem[i+2])
         #    player4.addHand(self.cardItem[i+3])
         #return
-        for i in range(0,13):
+        for i in range(0,12):
             player1.addHand(self.cardItem[i])
-        for i in range(13,26):
+        for i in range(12,24):
             player2.addHand(self.cardItem[i])
-        for i in range(26,39):
+        for i in range(24,36):
             player3.addHand(self.cardItem[i])
-        for i in range(39,52):
+        for i in range(36,48):
             player4.addHand(self.cardItem[i])
-
-        
+        for i in range(36,48):
+            player4.addHand(self.cardItem[i])
+        for i in range(48,52):
+            pot.addHand(self.cardItem[i])        
         
         
 

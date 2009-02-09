@@ -89,6 +89,7 @@ class background:
 		self.player2=None
 		self.player3=None
 		self.player4=None
+		self.pot=None
 		self.playerName=[]
 		self.playerName.append("Lord_Nelson")
 		self.playerName.append("darksider")
@@ -137,7 +138,6 @@ class background:
 		self.bidsuite=None
 		#self.currentbidnumber=None
 		#self.currentbidsuite=None
-		indD=0
 		while 1:  
 			#change status of self.blink
 			if self.blink==11 : self.blink=0
@@ -306,6 +306,10 @@ class background:
 						print "%s passed" % (self.player3.name,)
 					self.bid=None
 				#elif self.turnBid==4  and self.player4.currentbidnumber==None and self.player4.currentbidsuite==None:
+				#======================================================================================
+				#
+				#	players bid
+				#
 				elif self.turnBid==4:
 					self.bid=None
 					self.drawCardsInHand()
@@ -401,6 +405,10 @@ class background:
 				#if self.turnBid==4 and self.player4.currentbidnumber!=None:
 				elif self.turnBid==4:
 					self.turnBid=1
+			#============================================================================================
+			#
+			#	someone has won the bid, so now they have to select a general
+			#
 			if self.bidnumber!=None  and self.bidsuite!=None and self.GeneralCardNumber==None and self.GeneralCardSuite==None:
 				self.selectedGeneralCard=[]
 				self.player1.analayzHand(self.bidsuite)
@@ -410,14 +418,24 @@ class background:
 					self.selectedGeneralCard=self.player1.selectGeneralCard()
 					self.GeneralCardNumber=self.selectedGeneralCard[0]
 					self.GeneralCardSuite=self.selectedGeneralCard[1]
+					#now give player 1 the pot
+					#and then have them discard down to hand size
 				if self.Napoleon==2 :
 					self.selectedGeneralCard=self.player2.selectGeneralCard()
 					self.GeneralCardNumber=self.selectedGeneralCard[0]
 					self.GeneralCardSuite=self.selectedGeneralCard[1]
+					#now give player 2 the pot
+					#and then have them discard down to hand size					
 				if self.Napoleon==3:
 					self.selectedGeneralCard=self.player3.selectGeneralCard()
 					self.GeneralCardNumber=self.selectedGeneralCard[0]
 					self.GeneralCardSuite=self.selectedGeneralCard[1]
+					#now give player 3 the pot
+					#and then have them discard down to hand size					
+				#============================================================================================
+				#
+				#	player has won the bid and need to select general
+				#
 				if self.Napoleon==4:
 					self.tmpGeneralCardNumber=13
 					self.tmpGeneralCardSuite=2					
@@ -497,14 +515,16 @@ class background:
 								self.showNames()							
 								self.showMessage("General Selection: +/- on numpad and 1-5 for suite, enter to select")
 								pygame.display.flip()  
-					#self.tmpGeneralCardNumber=None
-					#self.tmpGeneralCardSuite=None
+					#now give player 4 (the player) the pot
+					#and then have them discard down to hand size
+						#this will probably be easiest as another internal loop
+					
 				print "the general card is %s of %s" % (self.textcardnumber(self.GeneralCardNumber), self.textsuite(self.GeneralCardSuite))
 				self.player1.analayzHand(self.bidsuite,self.GeneralCardNumber, self.GeneralCardSuite)
 				self.player2.analayzHand(self.bidsuite,self.GeneralCardNumber, self.GeneralCardSuite)
 				self.player3.analayzHand(self.bidsuite,self.GeneralCardNumber, self.GeneralCardSuite)
 				
-			indD+=1
+				
 			if self.turnPlay==1 and self.player1.currentPlay==None:
 				#print "1"
 				self.selectedCard=self.player1.play(self.tmpPlayedCard,self.playedCards,self.numOfDeckPlay,self.players,self.bidnumber,self.bidsuite,self.Napoleon,self.General)
@@ -1016,6 +1036,9 @@ class background:
 	def playAgain(self):
 		self.playedCards=[]
 		self.tmpPlayedCard=[]
+		#for storing the cards that will be in the pot
+		#using the player class for now but could do something different
+		self.pot=None
 		cc=cards()
 		self.numOfDeckPlay=0
 		
@@ -1036,6 +1059,7 @@ class background:
 		self.player2=Player(self.playerName[1],1);
 		self.player3=Player(self.playerName[2],2);
 		self.player4=Player(self.playerName[3],3,True)
+		self.pot=Player(None,4);
 		
 		#set Last players Result
 		self.player1.result=resultPlayer1
@@ -1043,7 +1067,7 @@ class background:
 		self.player3.result=resultPlayer3
 		self.player4.result=resultPlayer4
 		
-		cc.deck(self.player1, self.player2, self.player3, self.player4)
+		cc.deck(self.player1, self.player2, self.player3, self.player4, self.pot)
 		self.putGround(self.player1,self.player2,self.player3,self.player4)   
 		
 		
