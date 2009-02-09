@@ -123,8 +123,6 @@ class cards:
             player3.addHand(self.cardItem[i])
         for i in range(36,48):
             player4.addHand(self.cardItem[i])
-        for i in range(36,48):
-            player4.addHand(self.cardItem[i])
         for i in range(48,52):
             pot.addHand(self.cardItem[i])        
         
