@@ -128,7 +128,7 @@ class cards:
         for i in range(48,52):
             pot.addHand(self.cardItem[i])        
         
-        
+
 
         #return player1,player2,player3,player4
     

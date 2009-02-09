@@ -57,7 +57,7 @@ class Player:
 
 	def addHand(self,card):
 		self.cardsInHand.append(card)
-		#card.index=len(self.cardsInHand)-1
+		card.index=len(self.cardsInHand)-1
 		if card.name==cardNumber.Ace and card.type==cardType.Spades:
 			self.hasAceSpades=True
 
@@ -468,7 +468,8 @@ class Player:
 
 		if retcard==None:
 		#Ok stupid ! play every thinh you want ! I dont know how much must learn you Hearts Game :P
-			for i in range(0,13):
+			#for i in range(0,13):
+			for i in range(0, len(self.cardsInHand)-1):
 				if self.cardsInHand[i].isPlayed==False:
 					if self.checkPlayCard(self.cardsInHand[i], cardInGround, numOfDeckPlay):
 						retcard=self.cardsInHand[i]
@@ -709,7 +710,8 @@ class Player:
 
 		if retcard==None:
 		#Ok stupid ! play every thinh you want ! I dont know how much must learn you Napoleon Game :P
-			for i in range(0,13):
+			#for i in range(0,13):
+			for i in range(0, len(self.cardsInHand)-1):
 				if self.cardsInHand[i].isPlayed==False:
 					if self.checkPlayCard(self.cardsInHand[i], cardInGround, numOfDeckPlay):
 						retcard=self.cardsInHand[i]
@@ -1036,7 +1038,8 @@ class Player:
 							retcard=None
 		if retcard==None:
 		#Ok stupid ! play every thinh you want ! I dont know how much must learn you Hearts Game :P
-			for i in range(0,13):
+			#for i in range(0,13):
+			for i in range(0, len(self.cardsInHand)-1):
 				if self.cardsInHand[i].isPlayed==False:
 					if self.checkPlayCard(self.cardsInHand[i], cardInGround, numOfDeckPlay):
 						retcard=self.cardsInHand[i]
@@ -1050,9 +1053,11 @@ class Player:
 	def removeCards(self):
 		self.cardsInHand
 
-	def sortHande(self):
-		for i in range(0,13):
-			for j in range(0,13):
+	def sortHand(self):
+		#for i in range(0,13):
+		for i in range(0, len(self.cardsInHand)-1):
+			#for j in range(0,13):
+			for j in range(0, len(self.cardsInHand)-1):
 				if(self.cardsInHand[i].type>self.cardsInHand[j].type):
 					tmp=self.cardsInHand[i]
 					#self.cardsInHand[i]=None
@@ -1087,7 +1092,8 @@ class Player:
 		self.moveAndShowCard(index, x, y, screen)
 
 	def refreshHand(self,screen):
-		for i in range(0,13):
+		#for i in range(0,13):
+		for i in range(0, len(self.cardsInHand)-1):
 			if self.cardsInHand[i].isPlayed==False:
 				self.showCard(i, screen)
 			elif self.currentPlay!=None :
@@ -1116,7 +1122,8 @@ class Player:
 		return cardimg
 
 	def hasThisType(self,type):   
-		for i in range(0,13):
+		#for i in range(0,13):
+		for i in range(0, len(self.cardsInHand)-1):
 			if self.cardsInHand[i].isPlayed==False:
 				if self.cardsInHand[i].type==type:
 					return True
@@ -1124,7 +1131,8 @@ class Player:
 		
 	def howManyOfType(self,type):   
 		count = 0
-		for i in range(0,13):
+		#for i in range(0,13):
+		for i in range(0, len(self.cardsInHand)-1):
 			if self.cardsInHand[i].isPlayed==False:
 				if self.cardsInHand[i].type==type:
 					count+=1

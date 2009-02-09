@@ -1117,30 +1117,38 @@ class background:
 	def putGround(self,player1,player2,player3,player4):
 		
 		#sort hands of player1
-		#player1.sortHande()
+		#player1.sortHand()
 		#put cards of player1
-		for i in range(0,13):  
+		#for i in range(0,13):  
+		#for i in range(0, len(player1.cardsInHand)):
+		for i in range(0,12):  
 			#background=player1.getCardImg(i) 
 			player1.moveAndShowCard(i,screenPlayer1[i][0],screenPlayer1[i][1],self.screen)
 			 #self.screen.blit(background, (screenPlayer1[i][0], screenPlayer1[i][1]))
 
 		#sort hands of player2
-		#player2.sortHande()                 
+		#player2.sortHand()                 
 		#put cards of player2
-		for i in range(0,13):        
+		#for i in range(0,13):  
+		for i in range(0,12):  
+		#for i in range(0, len(player2.cardsInHand)):
 			player2.moveAndShowCard(i,screenPlayer2[i][0], screenPlayer2[i][1],self.screen)
 
 		
 		#sort hands of player3
-		#player3.sortHande()
+		#player3.sortHand()
 		#put cards of player3
-		for i in range(0,13):        
+		#for i in range(0,13):  
+		#for i in range(0, len(player3.cardsInHand)):
+		for i in range(0,12):  
 			player3.moveAndShowCard(i,screenPlayer3[i][0], screenPlayer3[i][1],self.screen)
 
 		#sort hands of player4
-		player4.sortHande()
+		player4.sortHand()
 		#put cards of player4
-		for i in range(0,13):
+		#for i in range(0,13):  
+		#for i in range(0, len(player4.cardsInHand)-1):
+		for i in range(0,12):  	
 			player4.moveAndShowCard(i,screenPlayer4[i][0], screenPlayer4[i][1],self.screen)
 		
 
