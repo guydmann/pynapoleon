@@ -54,8 +54,8 @@ class cardNumber:
 
     
 def load_image(name, colorkey=None):
-    fullname = os.path.join('data/img', name)
-
+    fullname = os.path.join('data/img/', name)
+    
     try:
         image=pygame.image.load(fullname)
         image=image.convert()
